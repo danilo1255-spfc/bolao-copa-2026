@@ -869,14 +869,90 @@ function renderAdminMatches(){
   document.getElementById('admin-matches-list').innerHTML=html;
 }
 function renderAdminPart(){
-  document.getElementById('admin-part-list').innerHTML=participants.map(p=>{
-    const sc=calcPoints(p.id);
-    return`<div class="card-sm" style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px">
-      <div><div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:600">${p.name}</div>
-      <div style="font-size:12px;color:var(--muted)">${p.phone||'—'} · ${sc.total} pts</div></div>
-      <span class="pill ${p.paid?'p-green':'p-red'}">${p.paid?'Pago':'Pendente'}</span>
-    </div>`;
-  }).join('')||'<p style="color:var(--muted);text-align:center;padding:20px">Nenhum participante ainda.</p>';
+  const html=`
+    <div class="card-sm" style="margin-bottom:16px;background:rgba(0,200,83,0.05);border-color:rgba(0,200,83,0.2)">
+      <div style="font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--g);margin-bottom:12px">➕ ADICIONAR PARTICIPANTE</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div><label class="inp-label">Nome</label><input class="inp" id="new-name" type="text" placeholder="Nome completo"></div>
+        <div><label class="inp-label">WhatsApp</label><input class="inp" id="new-phone" type="tel" placeholder="(11) 99999-9999"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div><label class="inp-label">🏆 Campeão</label><select class="inp" id="new-champ"><option value="">Selecione...</option>${TEAMS.map(t=>`<option value="${t}">${FLAGS[t]||''} ${t}</option>`).join('')}</select></div>
+        <div><label class="inp-label">🥈 Vice</label><select class="inp" id="new-runner"><option value="">Selecione...</option>${TEAMS.map(t=>`<option value="${t}">${FLAGS[t]||''} ${t}</option>`).join('')}</select></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:var(--muted)">
+          <input type="checkbox" id="new-paid" style="width:16px;height:16px;accent-color:var(--g)"> Pagamento confirmado
+        </label>
+        <button class="btn btn-g btn-sm" onclick="addParticipant()" style="width:100%">Adicionar</button>
+      </div>
+    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">LISTA DE PARTICIPANTES (${participants.length})</div>
+    ${participants.length===0?'<p style="color:var(--muted);text-align:center;padding:20px">Nenhum participante ainda.</p>':
+    participants.map(p=>{
+      const sc=calcPoints(p.id);
+      const pal=palpites[p.id]||{};
+      return`<div class="card-sm" style="margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:600">${p.name}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">${p.phone||'—'} · ${FLAGS[pal.champ||'']||'🏳️'} ${pal.champ||'—'} · ${sc.total} pts</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+            <span class="pill ${p.paid?'p-green':'p-red'}">${p.paid?'Pago':'Pendente'}</span>
+            <button onclick="editParticipant('${p.id}')" style="background:rgba(33,150,243,0.15);border:1px solid rgba(33,150,243,0.3);border-radius:4px;padding:4px 10px;color:#64b5f6;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px">EDITAR</button>
+            <button onclick="deleteParticipant('${p.id}')" style="background:rgba(244,67,54,0.12);border:1px solid rgba(244,67,54,0.25);border-radius:4px;padding:4px 10px;color:#ef9a9a;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px">EXCLUIR</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+  document.getElementById('admin-part-list').innerHTML=html;
+}
+
+function addParticipant(){
+  const name=document.getElementById('new-name').value.trim();
+  const phone=document.getElementById('new-phone').value.trim();
+  const champ=document.getElementById('new-champ').value;
+  const runner=document.getElementById('new-runner').value;
+  const paid=document.getElementById('new-paid').checked;
+  if(!name){showToast('Informe o nome','err');return;}
+  if(champ&&runner&&champ===runner){showToast('Campeão e vice não podem ser iguais','err');return;}
+  const uid=Date.now().toString();
+  participants.push({id:uid,name,phone,paid,ts:Date.now()});
+  if(!palpites[uid])palpites[uid]={};
+  if(champ)palpites[uid].champ=champ;
+  if(runner)palpites[uid].runner=runner;
+  save();renderAdminPart();renderHome();renderRanking();
+  document.getElementById('new-name').value='';
+  document.getElementById('new-phone').value='';
+  document.getElementById('new-champ').value='';
+  document.getElementById('new-runner').value='';
+  document.getElementById('new-paid').checked=false;
+  showToast(name+' adicionado!','ok');
+}
+
+function deleteParticipant(uid){
+  const p=participants.find(x=>x.id===uid);
+  if(!p)return;
+  if(!confirm('Excluir '+p.name+'? Esta ação não pode ser desfeita.'))return;
+  participants=participants.filter(x=>x.id!==uid);
+  delete palpites[uid];
+  save();renderAdminPart();renderHome();renderRanking();
+  showToast(p.name+' excluído','ok');
+}
+
+function editParticipant(uid){
+  const p=participants.find(x=>x.id===uid);
+  const pal=palpites[uid]||{};
+  if(!p)return;
+  const newName=prompt('Nome:',p.name);
+  if(newName===null)return;
+  const newPhone=prompt('WhatsApp:',p.phone||'');
+  if(newPhone===null)return;
+  participants=participants.map(x=>x.id===uid?{...x,name:newName.trim()||x.name,phone:newPhone.trim()}:x);
+  save();renderAdminPart();renderRanking();
+  showToast('Dados atualizados!','ok');
 }
 function renderAdminPay(){
   document.getElementById('admin-pay-list').innerHTML=participants.map(p=>`
