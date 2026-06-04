@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Bolão Copa 2026 — Completo</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#00c853;--g2:#69f0ae;--y:#ffd600;--r:#f44336;--b:#1565c0;
+  --d:#0a0f0a;--d2:#0f150f;--d3:#141e14;--d4:#1c261c;
+  --muted:rgba(255,255,255,0.45);--faint:rgba(255,255,255,0.07);
+}
+html{scroll-behavior:smooth}
+body{background:var(--d);color:#fff;font-family:'Barlow',sans-serif;overflow-x:hidden}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(10,15,10,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,200,83,0.12)}
+.nav-logo{font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:2px;color:#fff}
+.nav-logo span{color:var(--g)}
+.nav-tabs{display:flex;gap:2px}
+.ntab{background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;padding:6px 12px;border-radius:4px;transition:all .15s}
+.ntab:hover{color:#fff;background:var(--faint)}
+.ntab.on{color:var(--g);background:rgba(0,200,83,0.08)}
+/* PAGES */
+.page{display:none;padding:72px 16px 80px;max-width:960px;margin:0 auto}
+.page.on{display:block}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(10,15,10,0.97);backdrop-filter:blur(12px);border-top:1px solid rgba(0,200,83,0.1);display:flex;justify-content:space-around;padding:8px 0 max(10px,env(safe-area-inset-bottom))}
+.bnav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 12px;opacity:.35;transition:opacity .2s}
+.bnav-btn.on{opacity:1}
+.bnav-icon{font-size:18px}
+.bnav-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--g);text-transform:uppercase}
+/* SECTION HEADER */
+.sec-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--g);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sec-tag::before{content:'';width:18px;height:2px;background:var(--g)}
+.sec-title{font-family:'Oswald',sans-serif;font-size:clamp(28px,5vw,42px);font-weight:700;text-transform:uppercase;letter-spacing:-1px;margin-bottom:20px}
+/* CARDS */
+.card{background:var(--d3);border:1px solid rgba(255,255,255,0.07);border-radius:8px}
+.card-sm{background:var(--d3);border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:14px 16px}
+/* PILLS */
+.pill{display:inline-block;padding:2px 8px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.p-green{background:rgba(0,200,83,0.12);color:var(--g);border:1px solid rgba(0,200,83,0.2)}
+.p-red{background:rgba(244,67,54,0.1);color:#ef9a9a;border:1px solid rgba(244,67,54,0.2)}
+.p-yellow{background:rgba(255,214,0,0.1);color:var(--y);border:1px solid rgba(255,214,0,0.2)}
+.p-blue{background:rgba(21,101,192,0.15);color:#64b5f6;border:1px solid rgba(21,101,192,0.3)}
+.p-gray{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.1)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 24px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s}
+.btn-g{background:var(--g);color:#000}
+.btn-g:hover{background:var(--g2);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.2)}
+.btn-outline:hover{border-color:rgba(255,255,255,0.5);background:var(--faint)}
+.btn-sm{padding:7px 14px;font-size:13px;letter-spacing:1px}
+/* INPUTS */
+.inp{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s;-webkit-appearance:none}
+.inp:focus{border-color:var(--g)}
+.inp option{background:#141e14}
+.inp-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g);display:block;margin-bottom:6px}
+.inp-group{margin-bottom:14px}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.on{opacity:1;pointer-events:all}
+.modal{background:var(--d3);border:1px solid rgba(0,200,83,0.15);border-top:3px solid var(--g);border-radius:8px;width:100%;max-width:480px;padding:28px 24px;position:relative;max-height:90vh;overflow-y:auto}
+.modal-x{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 8px}
+.modal-x:hover{color:#fff}
+/* TOAST */
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;z-index:999;white-space:nowrap;opacity:0;transition:opacity .2s;text-transform:uppercase;pointer-events:none;max-width:92vw;text-align:center}
+.toast.on{opacity:1}
+.t-ok{background:var(--g);color:#000}
+.t-err{background:var(--r);color:#fff}
+/* DIVIDER */
+hr.dim{border:none;border-top:1px solid rgba(255,255,255,0.06);margin:16px 0}
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+/* STAT BOX */
+.stat-box{background:var(--d3);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px;text-align:center}
+.stat-val{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:var(--g);line-height:1}
+.stat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);margin-top:4px;text-transform:uppercase}
+
+/* ── HOME ── */
+.hero-banner{background:linear-gradient(135deg,var(--d2),var(--d3));border:1px solid rgba(0,200,83,0.12);border-radius:12px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden;text-align:center}
+.hero-banner::before{content:'⚽';position:absolute;right:-20px;top:-20px;font-size:120px;opacity:.04}
+.hero-title-big{font-family:'Oswald',sans-serif;font-size:clamp(36px,8vw,72px);font-weight:700;text-transform:uppercase;letter-spacing:-1px;line-height:.95}
+.hero-title-big .g{background:linear-gradient(135deg,var(--y),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--r);animation:pulse 1.2s ease infinite;margin-right:6px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(244,67,54,.5)}50%{box-shadow:0 0 0 5px rgba(244,67,54,0)}}
+.pot-display{font-family:'Oswald',sans-serif;font-size:clamp(40px,8vw,80px);font-weight:700;color:var(--g);line-height:1;margin:12px 0 4px}
+/* PRIZE BARS */
+.prize-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.prize-row:last-child{border-bottom:none}
+.prize-icon{font-size:20px;min-width:28px}
+.prize-info{flex:1}
+.prize-name{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px}
+.prize-desc{font-size:12px;color:var(--muted);margin-top:1px}
+.prize-pct{font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:var(--y);min-width:40px;text-align:right}
+.prize-val{font-size:11px;color:var(--muted);text-align:right}
+.pbar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:6px;overflow:hidden}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--y));border-radius:2px}
+
+/* ── CADASTRO / PALPITES ── */
+.steps-bar{display:flex;gap:6px;margin-bottom:24px}
+.step-dot{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.12);transition:background .3s}
+.step-dot.on{background:var(--g)}
+.step-dot.done{background:rgba(0,200,83,0.35)}
+.fstep{display:none}.fstep.on{display:block}
+/* MATCHES PALPITE */
+.match-palpite{display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--d4);border-radius:6px;border:1px solid rgba(255,255,255,0.06);margin-bottom:8px;transition:border-color .2s}
+.match-palpite:focus-within{border-color:rgba(0,200,83,0.3)}
+.mp-team{flex:1;text-align:center}
+.mp-flag{font-size:22px}
+.mp-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;margin-top:2px}
+.mp-vs{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.score-inp{width:44px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:6px 4px;color:#fff;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;text-align:center;outline:none;-webkit-appearance:none;-moz-appearance:textfield}
+.score-inp:focus{border-color:var(--g)}
+.score-inp::-webkit-inner-spin-button,.score-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.vs-sep{font-family:'Oswald',sans-serif;font-size:14px;color:var(--muted);letter-spacing:2px}
+.mp-stage{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.group-header{font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g);padding:12px 0 6px;display:flex;align-items:center;gap:8px}
+.group-header::after{content:'';flex:1;height:1px;background:rgba(0,200,83,0.15)}
+
+/* ── JOGOS / RESULTADOS ── */
+.match-card{display:flex;align-items:center;padding:14px 16px;background:var(--d3);border:1px solid rgba(255,255,255,0.07);border-radius:8px;margin-bottom:8px;gap:10px;cursor:pointer;transition:border-color .2s}
+.match-card:hover{border-color:rgba(0,200,83,0.2)}
+.mc-team{flex:1;text-align:center}
+.mc-flag{font-size:20px}
+.mc-name{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;letter-spacing:.5px;margin-top:2px}
+.mc-score{background:rgba(0,0,0,0.3);border-radius:6px;padding:6px 12px;font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;letter-spacing:3px;min-width:72px;text-align:center;border:1px solid rgba(255,255,255,0.08);flex-shrink:0}
+.mc-vs{background:rgba(255,255,255,0.04);border-radius:6px;padding:6px 12px;min-width:72px;text-align:center;flex-shrink:0;border:1px solid rgba(255,255,255,0.06)}
+.mc-vs-text{font-family:'Oswald',sans-serif;font-size:14px;color:var(--y);letter-spacing:2px}
+.mc-vs-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);margin-top:2px}
+.mc-stage-tag{font-size:9px;letter-spacing:2px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-top:3px}
+
+/* ADMIN RESULT INPUT */
+.result-form{display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--d4);border-radius:6px;margin-bottom:8px}
+.rf-team{flex:1;font-family:'Oswald',sans-serif;font-size:13px;font-weight:600}
+.rf-inp{width:44px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:6px 4px;color:#fff;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;text-align:center;outline:none;-webkit-appearance:none;-moz-appearance:textfield}
+.rf-inp:focus{border-color:var(--g)}
+.rf-inp::-webkit-inner-spin-button,.rf-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+
+/* ── RANKING ── */
+.rank-row{display:flex;align-items:center;gap:10px;padding:13px 14px;background:var(--d3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;margin-bottom:6px;cursor:pointer;transition:border-color .2s}
+.rank-row:hover{border-color:rgba(0,200,83,0.2)}
+.rank-row.r1{background:linear-gradient(90deg,rgba(255,214,0,0.06),var(--d3));border-color:rgba(255,214,0,0.2)}
+.rk-pos{font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:rgba(255,255,255,0.2);min-width:28px;text-align:center}
+.rk-pos.gold{color:var(--y)}
+.rk-info{flex:1;min-width:0}
+.rk-name{font-family:'Oswald',sans-serif;font-size:16px;font-weight:600;letter-spacing:.5px}
+.rk-champ{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.rk-pts{font-family:'Oswald',sans-serif;font-size:22px;font-weight:700;color:var(--g);line-height:1}
+.rk-pts-sub{font-size:9px;letter-spacing:2px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase}
+.rk-bar{height:2px;background:rgba(255,255,255,0.06);border-radius:1px;overflow:hidden;margin-top:3px;width:60px}
+.rk-bar-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--y));border-radius:1px}
+
+/* TIEBREAKER LIST */
+.tb-list{counter-reset:tb}
+.tb-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.tb-item:last-child{border-bottom:none}
+.tb-n{font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--g);min-width:22px}
+.tb-text{font-size:14px;color:rgba(255,255,255,0.75);line-height:1.5}
+
+/* PROGRESS BAR */
+.prog-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin:8px 0}
+.prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--g),var(--g2));transition:width .5s ease}
+
+/* PIX CARD */
+.pix-card{background:rgba(21,101,192,0.08);border:1px solid rgba(33,150,243,0.2);border-radius:10px;padding:18px 20px;margin:16px 0}
+.pix-key{font-size:16px;font-weight:600;color:#64b5f6;word-break:break-all;margin-top:4px}
+
+/* PARTICIPANT DETAIL */
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.pd-cell{background:var(--d4);border-radius:6px;padding:10px 12px}
+.pd-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.pd-val{font-family:'Oswald',sans-serif;font-size:15px;font-weight:600}
+
+@media(max-width:540px){
+  .grid2,.grid3{grid-template-columns:1fr}
+  .pd-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BOLÃO <span>COPA 2026</span></div>
+  <div class="nav-tabs" id="desktop-tabs">
+    <button class="ntab on" onclick="gotoPage('home')">Início</button>
+    <button class="ntab" onclick="gotoPage('palpites')">Palpitar</button>
+    <button class="ntab" onclick="gotoPage('jogos')">Jogos</button>
+    <button class="ntab" onclick="gotoPage('ranking')">Ranking</button>
+    <button class="ntab" onclick="gotoPage('admin')">Admin</button>
+  </div>
+</nav>
+
+<!-- PAGES -->
+
+<!-- ═══════════════════════════════════════════════ HOME ═══ -->
+<div class="page on" id="page-home">
+  <div class="hero-banner">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:5px;color:var(--g);margin-bottom:8px"><span class="live-dot"></span>INSCRIÇÕES ABERTAS</div>
+    <div class="hero-title-big">BOLÃO<br><span class="g">COPA 2026</span></div>
+    <div style="font-size:13px;color:var(--muted);margin:10px 0">🇺🇸 · 🇲🇽 · 🇨🇦 &nbsp;·&nbsp; 11 jun — 19 jul 2026</div>
+    <div class="pot-display" id="home-pot">R$0</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted)">PREMIAÇÃO ACUMULADA</div>
+    <div class="prog-bar" style="max-width:320px;margin:14px auto 4px"><div class="prog-fill" id="home-prog" style="width:0%"></div></div>
+    <div style="font-size:12px;color:var(--muted)" id="home-paid-info">0 pagos · 0 pendentes</div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+      <button class="btn btn-g" onclick="gotoPage('palpites')">⚽ Fazer Palpites</button>
+      <button class="btn btn-outline" onclick="gotoPage('ranking')">Ver Ranking →</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid3" style="margin-bottom:20px">
+    <div class="stat-box"><div class="stat-val" id="h-total">0</div><div class="stat-label">Participantes</div></div>
+    <div class="stat-box"><div class="stat-val">104</div><div class="stat-label">Jogos</div></div>
+    <div class="stat-box"><div class="stat-val">48</div><div class="stat-label">Seleções</div></div>
+  </div>
+
+  <!-- Prizes -->
+  <div class="sec-tag">Distribuição de prêmios</div>
+  <div class="card" style="padding:16px 18px;margin-bottom:20px" id="prize-list"></div>
+
+  <!-- Scoring -->
+  <div class="sec-tag">Como pontuar</div>
+  <div class="card" style="padding:4px 18px;margin-bottom:20px">
+    <div class="prize-row"><span class="prize-icon">🎯</span><span class="prize-info"><div class="prize-name">Placar exato</div></span><span class="prize-pct" style="color:var(--g)">+3</span></div>
+    <div class="prize-row"><span class="prize-icon">✅</span><span class="prize-info"><div class="prize-name">Resultado correto (vitória/empate)</div></span><span class="prize-pct" style="color:var(--g)">+1</span></div>
+    <div class="prize-row"><span class="prize-icon">🏆</span><span class="prize-info"><div class="prize-name">Bônus: acertou o campeão</div></span><span class="prize-pct" style="color:var(--y)">+10</span></div>
+    <div class="prize-row"><span class="prize-icon">🥈</span><span class="prize-info"><div class="prize-name">Bônus: acertou o vice</div></span><span class="prize-pct" style="color:var(--y)">+5</span></div>
+  </div>
+
+  <!-- Tiebreakers -->
+  <div class="sec-tag">12 critérios de desempate</div>
+  <div class="card" style="padding:4px 18px;margin-bottom:20px">
+    <div class="tb-list">
+      <div class="tb-item"><span class="tb-n">1</span><span class="tb-text">Maior número de placares exatos (3pts)</span></div>
+      <div class="tb-item"><span class="tb-n">2</span><span class="tb-text">Maior número de resultados corretos (1pt)</span></div>
+      <div class="tb-item"><span class="tb-n">3</span><span class="tb-text">Maior pontuação somente na fase de grupos</span></div>
+      <div class="tb-item"><span class="tb-n">4</span><span class="tb-text">Maior pontuação somente nas oitavas de final</span></div>
+      <div class="tb-item"><span class="tb-n">5</span><span class="tb-text">Maior pontuação somente nas quartas de final</span></div>
+      <div class="tb-item"><span class="tb-n">6</span><span class="tb-text">Maior pontuação somente nas semifinais</span></div>
+      <div class="tb-item"><span class="tb-n">7</span><span class="tb-text">Acertou o campeão do mundo (+10pts bônus)</span></div>
+      <div class="tb-item"><span class="tb-n">8</span><span class="tb-text">Acertou o vice-campeão do mundo (+5pts bônus)</span></div>
+      <div class="tb-item"><span class="tb-n">9</span><span class="tb-text">Menor diferença de gols nos palpites vs resultados reais</span></div>
+      <div class="tb-item"><span class="tb-n">10</span><span class="tb-text">Maior número de gols totais palpitados corretamente</span></div>
+      <div class="tb-item"><span class="tb-n">11</span><span class="tb-text">Palpite do placar final da Copa mais próximo do real</span></div>
+      <div class="tb-item"><span class="tb-n">12</span><span class="tb-text">Cadastro mais antigo (data e hora de inscrição)</span></div>
+    </div>
+  </div>
+
+  <!-- Pix -->
+  <div class="sec-tag">Pagamento</div>
+  <div class="pix-card">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase">Chave Pix · R$25,00 por participante</div>
+    <div class="pix-key">danilo_9228@hotmail.com</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:6px">⚠️ Informe seu nome completo no campo descrição do Pix</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ PALPITES ═══ -->
+<div class="page" id="page-palpites">
+  <div id="palpite-login" class="on">
+    <div class="sec-tag">Fazer palpites</div>
+    <div class="sec-title">Seus<br>Palpites</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Palpite o placar de todos os jogos da fase de grupos + escolha seu campeão e vice.</p>
+    <div class="card" style="padding:20px">
+      <div class="inp-group">
+        <label class="inp-label">Buscar pelo seu nome</label>
+        <input class="inp" id="palp-search" type="text" placeholder="Digite seu nome...">
+      </div>
+      <button class="btn btn-g" style="width:100%" onclick="searchParticipant()">Buscar meus palpites</button>
+      <hr class="dim">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Ainda não se cadastrou?</p>
+      <button class="btn btn-outline" style="width:100%" onclick="showReg()">Criar minha conta →</button>
+    </div>
+  </div>
+
+  <div id="palpite-form" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div>
+        <div class="sec-tag">Editando palpites</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:700" id="palp-name-title"></div>
+      </div>
+      <button class="btn btn-sm btn-g" id="save-palpites-btn" onclick="savePalpites()">Salvar</button>
+    </div>
+
+    <!-- Champion / Runner-up -->
+    <div class="card" style="padding:16px 18px;margin-bottom:16px">
+      <div class="sec-tag" style="margin-bottom:12px">Palpites bônus</div>
+      <div class="inp-group">
+        <label class="inp-label">🏆 Campeão do Mundo</label>
+        <select class="inp" id="palp-champ"><option value="">Selecione...</option></select>
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">🥈 Vice-Campeão</label>
+        <select class="inp" id="palp-runner"><option value="">Selecione...</option></select>
+      </div>
+    </div>
+
+    <!-- Group matches -->
+    <div id="palp-matches-container"></div>
+
+    <button class="btn btn-g" style="width:100%;margin-top:8px" onclick="savePalpites()">💾 Salvar todos os palpites</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ JOGOS ═══ -->
+<div class="page" id="page-jogos">
+  <div class="sec-tag">Copa do Mundo 2026</div>
+  <div class="sec-title">Jogos</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px" id="stage-filters">
+    <button class="btn btn-sm p-green" style="border:none" onclick="filterStage('all')">Todos</button>
+    <button class="btn btn-sm btn-outline" onclick="filterStage('Grupos')">Grupos</button>
+    <button class="btn btn-sm btn-outline" onclick="filterStage('Oitavas')">Oitavas</button>
+    <button class="btn btn-sm btn-outline" onclick="filterStage('Quartas')">Quartas</button>
+    <button class="btn btn-sm btn-outline" onclick="filterStage('Semi')">Semis</button>
+    <button class="btn btn-sm btn-outline" onclick="filterStage('Final')">Final</button>
+  </div>
+  <div id="jogos-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ RANKING ═══ -->
+<div class="page" id="page-ranking">
+  <div class="sec-tag">Classificação ao vivo</div>
+  <div class="sec-title">Ranking</div>
+  <div class="grid2" style="margin-bottom:16px">
+    <div class="stat-box"><div class="stat-val" id="rk-total">0</div><div class="stat-label">Participantes</div></div>
+    <div class="stat-box"><div class="stat-val" id="rk-pot">R$0</div><div class="stat-label">Premiação</div></div>
+  </div>
+  <div id="ranking-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ ADMIN ═══ -->
+<div class="page" id="page-admin">
+  <div id="admin-lock">
+    <div class="sec-tag">Acesso restrito</div>
+    <div class="sec-title">Admin</div>
+    <div class="card" style="padding:20px;max-width:360px">
+      <div class="inp-group"><label class="inp-label">Senha</label><input class="inp" id="admin-pass" type="password" placeholder="Digite a senha..."></div>
+      <button class="btn btn-g" style="width:100%" onclick="adminLogin()">Entrar</button>
+    </div>
+  </div>
+  <div id="admin-panel" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div><div class="sec-tag">Painel do organizador</div><div class="sec-title" style="font-size:28px">Admin</div></div>
+      <button class="btn btn-sm btn-outline" onclick="adminLogout()">Sair</button>
+    </div>
+    <!-- Tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn btn-sm p-green" style="border:none" onclick="adminTab('resultados')">Resultados</button>
+      <button class="btn btn-sm btn-outline" onclick="adminTab('participantes')">Participantes</button>
+      <button class="btn btn-sm btn-outline" onclick="adminTab('pagamentos')">Pagamentos</button>
+    </div>
+
+    <div id="admin-resultados">
+      <div class="sec-tag" style="margin-bottom:12px">Lançar resultados</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Clique no jogo para inserir o placar real. A pontuação de todos é recalculada automaticamente.</p>
+      <div id="admin-matches-list"></div>
+    </div>
+
+    <div id="admin-participantes" style="display:none">
+      <div class="sec-tag" style="margin-bottom:12px">Todos os participantes</div>
+      <div id="admin-part-list"></div>
+    </div>
+
+    <div id="admin-pagamentos" style="display:none">
+      <div class="sec-tag" style="margin-bottom:12px">Confirmar pagamentos</div>
+      <div id="admin-pay-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: CADASTRO ═══ -->
+<div class="overlay" id="modal-reg">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('modal-reg')">✕</button>
+    <div class="steps-bar"><div class="step-dot on" id="sd1"></div><div class="step-dot" id="sd2"></div><div class="step-dot" id="sd3"></div></div>
+    <div class="fstep on" id="reg1">
+      <div style="font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;text-align:center;margin-bottom:4px">Seus dados</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-align:center;margin-bottom:22px;text-transform:uppercase">Passo 1 de 2</div>
+      <div class="inp-group"><label class="inp-label">Nome completo</label><input class="inp" id="reg-name" type="text" placeholder="Ex: João Silva"></div>
+      <div class="inp-group"><label class="inp-label">WhatsApp</label><input class="inp" id="reg-phone" type="tel" placeholder="(11) 99999-9999"></div>
+      <button class="btn btn-g" style="width:100%" onclick="regNext()">Próximo →</button>
+    </div>
+    <div class="fstep" id="reg2">
+      <div style="font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;text-align:center;margin-bottom:4px">Palpites bônus</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-align:center;margin-bottom:22px;text-transform:uppercase">Passo 2 de 2</div>
+      <div class="inp-group"><label class="inp-label">🏆 Campeão do Mundo</label><select class="inp" id="reg-champ"><option value="">Selecione...</option></select></div>
+      <div class="inp-group"><label class="inp-label">🥈 Vice-Campeão</label><select class="inp" id="reg-runner"><option value="">Selecione...</option></select></div>
+      <div style="background:rgba(255,214,0,0.05);border:1px solid rgba(255,214,0,0.15);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--muted);margin-bottom:16px">⚠️ Os palpites de jogos ficam disponíveis na aba Palpitar após o cadastro.</div>
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px">
+        <button class="btn btn-outline" onclick="regBack()">← Voltar</button>
+        <button class="btn btn-g" onclick="regSubmit()">Criar conta</button>
+      </div>
+    </div>
+    <div class="fstep" id="reg3">
+      <div style="text-align:center;padding:10px 0">
+        <div style="font-size:56px;margin-bottom:12px">🎉</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--g);margin-bottom:8px">Cadastrado!</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">Agora faça o Pix de <strong style="color:var(--g)">R$25,00</strong> e preencha seus palpites na aba Palpitar.</div>
+        <div class="pix-card" style="text-align:left">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase">Chave Pix</div>
+          <div class="pix-key" style="font-size:14px">danilo_9228@hotmail.com</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px" id="reg3-name">Informe seu nome no Pix</div>
+        </div>
+        <button class="btn btn-g" style="width:100%;margin-top:16px" onclick="closeModal('modal-reg');gotoPage('palpites')">Fazer meus palpites →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: RESULTADO ADMIN ═══ -->
+<div class="overlay" id="modal-result">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('modal-result')">✕</button>
+    <div style="font-family:'Oswald',sans-serif;font-size:22px;font-weight:700;margin-bottom:16px" id="result-title">Lançar resultado</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+      <div class="rf-team" id="result-home" style="text-align:center"></div>
+      <input class="rf-inp" id="result-home-score" type="number" min="0" max="99" placeholder="0">
+      <div style="font-family:'Oswald',sans-serif;font-size:16px;color:var(--muted)">×</div>
+      <input class="rf-inp" id="result-away-score" type="number" min="0" max="99" placeholder="0">
+      <div class="rf-team" id="result-away" style="text-align:center"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn btn-outline" onclick="clearResult()">Limpar resultado</button>
+      <button class="btn btn-g" onclick="saveResult()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: PARTICIPANTE DETALHE ═══ -->
+<div class="overlay" id="modal-part">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('modal-part')">✕</button>
+    <div id="modal-part-content"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn on" id="bnav-home" onclick="gotoPage('home')"><span class="bnav-icon">🏠</span><span class="bnav-label">Início</span></button>
+  <button class="bnav-btn" id="bnav-palpites" onclick="gotoPage('palpites')"><span class="bnav-icon">✏️</span><span class="bnav-label">Palpitar</span></button>
+  <button class="bnav-btn" id="bnav-jogos" onclick="gotoPage('jogos')"><span class="bnav-icon">⚽</span><span class="bnav-label">Jogos</span></button>
+  <button class="bnav-btn" id="bnav-ranking" onclick="gotoPage('ranking')"><span class="bnav-icon">📊</span><span class="bnav-label">Ranking</span></button>
+  <button class="bnav-btn" id="bnav-admin" onclick="gotoPage('admin')"><span class="bnav-icon">⚙️</span><span class="bnav-label">Admin</span></button>
+</nav>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════════
+const FLAGS={Brasil:"🇧🇷",Argentina:"🇦🇷","França":"🇫🇷",Alemanha:"🇩🇪",Inglaterra:"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Espanha":"🇪🇸",Portugal:"🇵🇹",Holanda:"🇳🇱","Itália":"🇮🇹",Uruguai:"🇺🇾","Colômbia":"🇨🇴","Bélgica":"🇧🇪","Croácia":"🇭🇷",Noruega:"🇳🇴",Japão:"🇯🇵","Coreia do Sul":"🇰🇷",Marrocos:"🇲🇦",Senegal:"🇸🇳","México":"🇲🇽",EUA:"🇺🇸","Canadá":"🇨🇦","Austrália":"🇦🇺","Suíça":"🇨🇭","Áustria":"🇦🇹",Peru:"🇵🇪",Chile:"🇨🇱","Nova Zelândia":"🇳🇿","Costa Rica":"🇨🇷",Panamá:"🇵🇦","Arábia Saudita":"🇸🇦","Irã":"🇮🇷","Qatar":"🇶🇦","Costa do Marfim":"🇨🇮",Egito:"🇪🇬","África do Sul":"🇿🇦","Rep. Tcheca":"🇨🇿","Eslováquia":"🇸🇰","Albânia":"🇦🇱","Geórgia":"🇬🇪",Turquia:"🇹🇷","Sérvia":"🇷🇸","Ucrânia":"🇺🇦","Romênia":"🇷🇴",Venezuela:"🇻🇪",Equador:"🇪🇨","El Salvador":"🇸🇻",Honduras:"🇭🇳","Nova Guiné":"🇵🇬"};
+const TEAMS=Object.keys(FLAGS);
+const PRIZES=[
+  {icon:"🥇",name:"Campeão do Bolão",desc:"Maior pontuação total",pct:50},
+  {icon:"🥈",name:"Vice do Bolão",desc:"2ª maior pontuação",pct:20},
+  {icon:"🥉",name:"3º Lugar",desc:"3ª maior pontuação",pct:10},
+  {icon:"⚽",name:"Rei da Fase de Grupos",desc:"Maior pontuação até 27/jun",pct:10},
+  {icon:"🎯",name:"Chutou o Campeão",desc:"Acertou o campeão — independente do ranking",pct:10},
+];
+
+// ═══ GROUPS AND MATCHES ═══
+// Copa 2026: 12 groups (A-L), 4 teams each, 2 games per pair = 6 games per group
+const GROUPS = {
+  A:["EUA","Panamá","Uruguai","Peru"],
+  B:["México","Honduras","Argentina","Chile"],
+  C:["Canadá","Noruega","Espanha","Marrocos"],
+  D:["Brasil","Venezuela","Japão","Egito"],
+  E:["Alemanha","Eslováquia","Croácia","El Salvador"],
+  F:["França","Albânia","Bélgica","Turquia"],
+  G:["Portugal","Geórgia","Equador","Costa Rica"],
+  H:["Inglaterra","Sérvia","Austrália","Panamá"],
+  I:["Holanda","Ucrânia","Irã","Nova Zelândia"],
+  J:["Itália","Romênia","Coreia do Sul","Costa do Marfim"],
+  K:["Colômbia","Costa Rica","Arábia Saudita","El Salvador"],
+  L:["Senegal","Nova Guiné","Suíça","Áustria"],
+};
+
+// Auto-generate group matches
+let matchIdCounter=1;
+const MATCHES=[];
+// Group stage
+const groupDates={
+  A:["2026-06-11","2026-06-11","2026-06-15","2026-06-15","2026-06-19","2026-06-19"],
+  B:["2026-06-12","2026-06-12","2026-06-16","2026-06-16","2026-06-20","2026-06-20"],
+  C:["2026-06-12","2026-06-12","2026-06-16","2026-06-16","2026-06-20","2026-06-20"],
+  D:["2026-06-13","2026-06-13","2026-06-17","2026-06-17","2026-06-21","2026-06-21"],
+  E:["2026-06-13","2026-06-13","2026-06-17","2026-06-17","2026-06-21","2026-06-21"],
+  F:["2026-06-14","2026-06-14","2026-06-18","2026-06-18","2026-06-22","2026-06-22"],
+  G:["2026-06-14","2026-06-14","2026-06-18","2026-06-18","2026-06-22","2026-06-22"],
+  H:["2026-06-15","2026-06-15","2026-06-19","2026-06-19","2026-06-23","2026-06-23"],
+  I:["2026-06-15","2026-06-15","2026-06-19","2026-06-19","2026-06-23","2026-06-23"],
+  J:["2026-06-16","2026-06-16","2026-06-20","2026-06-20","2026-06-24","2026-06-24"],
+  K:["2026-06-16","2026-06-16","2026-06-20","2026-06-20","2026-06-24","2026-06-24"],
+  L:["2026-06-17","2026-06-17","2026-06-21","2026-06-21","2026-06-25","2026-06-25"],
+};
+Object.keys(GROUPS).forEach(g=>{
+  const t=GROUPS[g];
+  const pairs=[[0,1],[2,3],[0,2],[1,3],[0,3],[1,2]];
+  pairs.forEach((pair,i)=>{
+    MATCHES.push({id:'m'+matchIdCounter++,home:t[pair[0]],away:t[pair[1]],date:groupDates[g]?.[i]||'2026-06-20',stage:'Grupos',group:g,homeScore:null,awayScore:null});
+  });
+});
+// Knockout placeholders
+const KNOCKOUT=[
+  // Oitavas
+  {id:'o1',home:'1A',away:'2B',date:'2026-06-29',stage:'Oitavas'},
+  {id:'o2',home:'1B',away:'2A',date:'2026-06-29',stage:'Oitavas'},
+  {id:'o3',home:'1C',away:'2D',date:'2026-06-30',stage:'Oitavas'},
+  {id:'o4',home:'1D',away:'2C',date:'2026-06-30',stage:'Oitavas'},
+  {id:'o5',home:'1E',away:'2F',date:'2026-07-01',stage:'Oitavas'},
+  {id:'o6',home:'1F',away:'2E',date:'2026-07-01',stage:'Oitavas'},
+  {id:'o7',home:'1G',away:'2H',date:'2026-07-02',stage:'Oitavas'},
+  {id:'o8',home:'1H',away:'2G',date:'2026-07-02',stage:'Oitavas'},
+  {id:'o9',home:'1I',away:'2J',date:'2026-07-03',stage:'Oitavas'},
+  {id:'o10',home:'1J',away:'2I',date:'2026-07-03',stage:'Oitavas'},
+  {id:'o11',home:'1K',away:'2L',date:'2026-07-04',stage:'Oitavas'},
+  {id:'o12',home:'1L',away:'2K',date:'2026-07-04',stage:'Oitavas'},
+  // Quartas
+  {id:'q1',home:'V O1',away:'V O2',date:'2026-07-07',stage:'Quartas'},
+  {id:'q2',home:'V O3',away:'V O4',date:'2026-07-07',stage:'Quartas'},
+  {id:'q3',home:'V O5',away:'V O6',date:'2026-07-08',stage:'Quartas'},
+  {id:'q4',home:'V O7',away:'V O8',date:'2026-07-08',stage:'Quartas'},
+  {id:'q5',home:'V O9',away:'V O10',date:'2026-07-09',stage:'Quartas'},
+  {id:'q6',home:'V O11',away:'V O12',date:'2026-07-09',stage:'Quartas'},
+  // Semis
+  {id:'s1',home:'V Q1',away:'V Q2',date:'2026-07-12',stage:'Semi'},
+  {id:'s2',home:'V Q3',away:'V Q4',date:'2026-07-12',stage:'Semi'},
+  {id:'s3',home:'V Q5',away:'V Q6',date:'2026-07-13',stage:'Semi'},
+  // Terceiro lugar
+  {id:'t1',home:'P S1',away:'P S2',date:'2026-07-18',stage:'Final'},
+  // Final
+  {id:'f1',home:'V S1',away:'V S2',date:'2026-07-19',stage:'Final'},
+];
+KNOCKOUT.forEach(m=>{MATCHES.push({...m,homeScore:null,awayScore:null});});
+
+// ═══ STATE ═══
+let participants=JSON.parse(localStorage.getItem('bolao26_p')||'[]');
+let results=JSON.parse(localStorage.getItem('bolao26_r')||'{}'); // {matchId:{h,a}}
+let palpites=JSON.parse(localStorage.getItem('bolao26_palp')||'{}'); // {userId:{matchId:{h,a},champ,runner}}
+let adminUnlocked=false;
+let currentEditUserId=null;
+let currentResultMatchId=null;
+let currentStageFilter='all';
+
+function save(){
+  localStorage.setItem('bolao26_p',JSON.stringify(participants));
+  localStorage.setItem('bolao26_r',JSON.stringify(results));
+  localStorage.setItem('bolao26_palp',JSON.stringify(palpites));
+}
+
+// ═══ SCORING ═══
+function calcPoints(uid){
+  const p=palpites[uid]||{};
+  let total=0,exact=0,correct=0;
+  const stagePoints={Grupos:0,Oitavas:0,Quartas:0,Semi:0,Final:0};
+  MATCHES.forEach(m=>{
+    const r=results[m.id];
+    const pal=p[m.id];
+    if(!r||r.h===null||r.a===null||!pal||pal.h===''||pal.a==='')return;
+    const rh=parseInt(r.h),ra=parseInt(r.a),ph=parseInt(pal.h),pa=parseInt(pal.a);
+    if(isNaN(rh)||isNaN(ra)||isNaN(ph)||isNaN(pa))return;
+    let pts=0;
+    if(ph===rh&&pa===ra){pts=3;exact++;}
+    else if((ph>pa&&rh>ra)||(ph<pa&&rh<ra)||(ph===pa&&rh===ra)){pts=1;correct++;}
+    total+=pts;
+    const st=m.stage||'Grupos';
+    if(stagePoints[st]!==undefined)stagePoints[st]+=pts;
+  });
+  // bonus
+  const part=participants.find(x=>x.id===uid);
+  if(part){
+    // Find champion (winner of final)
+    const finalR=results['f1'];
+    if(finalR&&finalR.h!==null&&finalR.a!==null){
+      const champ=parseInt(finalR.h)>=parseInt(finalR.a)?MATCHES.find(x=>x.id==='f1')?.home:MATCHES.find(x=>x.id==='f1')?.away;
+      if(p.champ&&p.champ===champ)total+=10;
+      if(p.runner&&p.runner===champ){}
+    }
+    if(p.champ===part.champ){}// already counted above via uid
+  }
+  return{total,exact,correct,stagePoints};
+}
+
+function getAllPoints(){
+  return participants.map(p=>{
+    const s=calcPoints(p.id);
+    return{...p,...s};
+  }).sort((a,b)=>{
+    if(b.total!==a.total)return b.total-a.total;
+    if(b.exact!==a.exact)return b.exact-a.exact;
+    if(b.correct!==a.correct)return b.correct-a.correct;
+    if(b.stagePoints.Grupos!==a.stagePoints.Grupos)return b.stagePoints.Grupos-a.stagePoints.Grupos;
+    if(b.stagePoints.Oitavas!==a.stagePoints.Oitavas)return b.stagePoints.Oitavas-a.stagePoints.Oitavas;
+    if(b.stagePoints.Quartas!==a.stagePoints.Quartas)return b.stagePoints.Quartas-a.stagePoints.Quartas;
+    if(b.stagePoints.Semi!==a.stagePoints.Semi)return b.stagePoints.Semi-a.stagePoints.Semi;
+    const pal_a=palpites[a.id]||{};const pal_b=palpites[b.id]||{};
+    const ca=pal_a.champ||'',cb=pal_b.champ||'';
+    // champ bonus — already counted; runner bonus
+    const ra2=pal_a.runner||'',rb2=pal_b.runner||'';
+    return a.ts-b.ts;// last tiebreaker: oldest registration
+  });
+}
+
+function pot(){return participants.filter(p=>p.paid).length*25;}
+
+// ═══ NAVIGATION ═══
+function gotoPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('page-'+name).classList.add('on');
+  const idx={home:0,palpites:1,jogos:2,ranking:3,admin:4}[name];
+  document.querySelectorAll('.ntab')[idx]?.classList.add('on');
+  document.getElementById('bnav-'+name)?.classList.add('on');
+  if(name==='home')renderHome();
+  if(name==='jogos')renderJogos();
+  if(name==='ranking')renderRanking();
+  if(name==='admin'&&adminUnlocked)renderAdminMatches();
+  window.scrollTo(0,0);
+}
+
+// ═══ HOME ═══
+function renderHome(){
+  const n=participants.length,paid=participants.filter(p=>p.paid).length,p=pot();
+  document.getElementById('home-pot').textContent='R$'+p;
+  document.getElementById('h-total').textContent=n;
+  document.getElementById('home-paid-info').textContent=paid+' pagos · '+(n-paid)+' pendentes';
+  document.getElementById('home-prog').style.width=n?Math.round(paid/n*100)+'%':'0%';
+  // prizes
+  document.getElementById('prize-list').innerHTML=PRIZES.map(pr=>`
+    <div class="prize-row">
+      <span class="prize-icon">${pr.icon}</span>
+      <span class="prize-info"><div class="prize-name">${pr.name}</div><div class="prize-desc">${pr.desc}</div>
+      <div class="pbar"><div class="pbar-fill" style="width:${pr.pct}%"></div></div></span>
+      <div style="text-align:right;flex-shrink:0"><div class="prize-pct">${pr.pct}%</div><div class="prize-val">R$${Math.round(p*pr.pct/100)}</div></div>
+    </div>
+  `).join('');
+}
+
+// ═══ JOGOS ═══
+function filterStage(s){
+  currentStageFilter=s;
+  document.querySelectorAll('#stage-filters .btn').forEach(b=>{
+    b.className='btn btn-sm btn-outline';
+  });
+  event.target.className='btn btn-sm p-green';
+  renderJogos();
+}
+function renderJogos(){
+  const matches=currentStageFilter==='all'?MATCHES:MATCHES.filter(m=>m.stage===currentStageFilter);
+  let html='';
+  let lastGroup='';
+  matches.forEach(m=>{
+    const r=results[m.id];
+    const hasScore=r&&r.h!==null&&r.a!==null;
+    if(m.stage==='Grupos'&&m.group!==lastGroup){
+      html+=`<div class="group-header">Grupo ${m.group}</div>`;
+      lastGroup=m.group;
+    }else if(m.stage!=='Grupos'&&m.stage!==lastGroup){
+      html+=`<div class="group-header">${m.stage==='Semi'?'Semifinais':m.stage==='Final'?'Final / 3º Lugar':m.stage}</div>`;
+      lastGroup=m.stage;
+    }
+    const hf=FLAGS[m.home]||'🏳️',af=FLAGS[m.away]||'🏳️';
+    html+=`<div class="match-card" onclick="adminUnlocked?openResultModal('${m.id}'):null">
+      <div class="mc-team"><div class="mc-flag">${hf}</div><div class="mc-name">${m.home}</div></div>
+      ${hasScore
+        ?`<div class="mc-score">${r.h} – ${r.a}</div>`
+        :`<div class="mc-vs"><div class="mc-vs-text">VS</div><div class="mc-vs-date">${fmtDate(m.date)}</div></div>`
+      }
+      <div class="mc-team"><div class="mc-flag">${af}</div><div class="mc-name">${m.away}</div></div>
+    </div>`;
+  });
+  document.getElementById('jogos-list').innerHTML=html||'<p style="color:var(--muted);text-align:center;padding:32px 0">Nenhum jogo encontrado</p>';
+}
+function fmtDate(d){if(!d)return'';const p=d.split('-');return p[2]+'/'+p[1];}
+
+// ═══ RANKING ═══
+function renderRanking(){
+  const ranked=getAllPoints();
+  const max=ranked[0]?.total||1;
+  document.getElementById('rk-total').textContent=participants.length;
+  document.getElementById('rk-pot').textContent='R$'+pot();
+  document.getElementById('ranking-list').innerHTML=ranked.map((p,i)=>`
+    <div class="rank-row ${i===0?'r1':''}" onclick="openPartModal('${p.id}')">
+      <div class="rk-pos ${i===0?'gold':''}">${i===0?'★':i+1}</div>
+      <div class="rk-info">
+        <div class="rk-name">${p.name}</div>
+        <div class="rk-champ">${FLAGS[palpites[p.id]?.champ||'']||'🏳️'} ${palpites[p.id]?.champ||'—'} · <span class="${p.paid?'':''}${p.paid?'':''}${p.paid?'p-green':'p-red'} pill">${p.paid?'Pago':'Pendente'}</span></div>
+      </div>
+      <div class="rk-right">
+        <div class="rk-pts">${p.total}</div>
+        <div class="rk-pts-sub">pontos</div>
+        <div class="rk-bar"><div class="rk-bar-fill" style="width:${Math.round(p.total/max*100)}%"></div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══ PARTICIPANT MODAL ═══
+function openPartModal(uid){
+  const p=participants.find(x=>x.id===uid);
+  const pal=palpites[uid]||{};
+  const sc=calcPoints(uid);
+  document.getElementById('modal-part-content').innerHTML=`
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:44px">${FLAGS[pal.champ||'']||'🏳️'}</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;margin-top:6px">${p.name}</div>
+      <span class="pill ${p.paid?'p-green':'p-red'}">${p.paid?'Pagamento confirmado':'Pagamento pendente'}</span>
+    </div>
+    <div class="pd-grid">
+      <div class="pd-cell"><div class="pd-label">🏆 Campeão</div><div class="pd-val">${FLAGS[pal.champ||'']||''} ${pal.champ||'—'}</div></div>
+      <div class="pd-cell"><div class="pd-label">🥈 Vice</div><div class="pd-val">${FLAGS[pal.runner||'']||''} ${pal.runner||'—'}</div></div>
+      <div class="pd-cell"><div class="pd-label">⭐ Pontos</div><div class="pd-val" style="color:var(--g)">${sc.total} pts</div></div>
+      <div class="pd-cell"><div class="pd-label">🎯 Placares exatos</div><div class="pd-val">${sc.exact}</div></div>
+      <div class="pd-cell"><div class="pd-label">✅ Resultados certos</div><div class="pd-val">${sc.correct}</div></div>
+      <div class="pd-cell"><div class="pd-label">📅 Cadastro</div><div class="pd-val" style="font-size:12px">${new Date(p.ts).toLocaleDateString('pt-BR')}</div></div>
+    </div>
+    <button class="btn btn-outline" style="width:100%;margin-top:16px" onclick="closeModal('modal-part')">Fechar</button>
+  `;
+  openModal('modal-part');
+}
+
+// ═══ PALPITES ═══
+let searchedUID=null;
+function showReg(){openModal('modal-reg');buildRegSelects();}
+function searchParticipant(){
+  const q=document.getElementById('palp-search').value.trim().toLowerCase();
+  if(!q){showToast('Digite seu nome','err');return;}
+  const p=participants.find(x=>x.name.toLowerCase().includes(q));
+  if(!p){showToast('Participante não encontrado','err');return;}
+  openPalpiteForm(p.id);
+}
+function openPalpiteForm(uid){
+  searchedUID=uid;
+  currentEditUserId=uid;
+  const p=participants.find(x=>x.id===uid);
+  document.getElementById('palp-name-title').textContent=p.name;
+  document.getElementById('palpite-login').classList.remove('on');
+  document.getElementById('palpite-login').style.display='none';
+  document.getElementById('palpite-form').style.display='block';
+  // Fill selects
+  const pal=palpites[uid]||{};
+  fillTeamSelect('palp-champ',pal.champ||'');
+  fillTeamSelect('palp-runner',pal.runner||'');
+  // Build match inputs (group stage only for now)
+  let html='';
+  Object.keys(GROUPS).forEach(g=>{
+    html+=`<div class="group-header">Grupo ${g}</div>`;
+    MATCHES.filter(m=>m.group===g).forEach(m=>{
+      const r=results[m.id];
+      const hasResult=r&&r.h!==null&&r.a!==null;
+      const palM=pal[m.id]||{h:'',a:''};
+      html+=`<div class="match-palpite">
+        <div class="mp-team"><div class="mp-flag">${FLAGS[m.home]||'🏳️'}</div><div class="mp-name">${m.home}</div></div>
+        <div class="mp-vs">
+          ${hasResult
+            ?`<span style="font-family:'Oswald',sans-serif;font-size:16px;color:var(--g);padding:4px 8px">${r.h}–${r.a}</span>`
+            :`<input class="score-inp" type="number" min="0" max="99" data-mid="${m.id}" data-side="h" value="${palM.h}" placeholder="0">
+             <span class="vs-sep">×</span>
+             <input class="score-inp" type="number" min="0" max="99" data-mid="${m.id}" data-side="a" value="${palM.a}" placeholder="0">`
+          }
+        </div>
+        <div class="mp-team"><div class="mp-flag">${FLAGS[m.away]||'🏳️'}</div><div class="mp-name">${m.away}</div></div>
+      </div>`;
+    });
+  });
+  document.getElementById('palp-matches-container').innerHTML=html;
+}
+function savePalpites(){
+  if(!currentEditUserId){showToast('Erro: nenhum usuário','err');return;}
+  const uid=currentEditUserId;
+  if(!palpites[uid])palpites[uid]={};
+  palpites[uid].champ=document.getElementById('palp-champ').value;
+  palpites[uid].runner=document.getElementById('palp-runner').value;
+  document.querySelectorAll('.score-inp').forEach(inp=>{
+    const mid=inp.dataset.mid,side=inp.dataset.side;
+    if(!palpites[uid][mid])palpites[uid][mid]={h:'',a:''};
+    palpites[uid][mid][side]=inp.value;
+  });
+  save();
+  showToast('Palpites salvos!','ok');
+}
+
+// ═══ REGISTRATION ═══
+function buildRegSelects(){
+  fillTeamSelect('reg-champ','');
+  fillTeamSelect('reg-runner','');
+}
+function fillTeamSelect(id,val){
+  document.getElementById(id).innerHTML='<option value="">Selecione...</option>'+TEAMS.map(t=>`<option value="${t}" ${t===val?'selected':''}>${FLAGS[t]||''} ${t}</option>`).join('');
+}
+function regNext(){
+  const name=document.getElementById('reg-name').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  if(!name){showToast('Informe seu nome','err');return;}
+  document.getElementById('reg1').classList.remove('on');
+  document.getElementById('reg2').classList.add('on');
+  document.getElementById('sd1').classList.remove('on');document.getElementById('sd1').classList.add('done');
+  document.getElementById('sd2').classList.add('on');
+}
+function regBack(){
+  document.getElementById('reg2').classList.remove('on');
+  document.getElementById('reg1').classList.add('on');
+  document.getElementById('sd2').classList.remove('on');
+  document.getElementById('sd1').classList.remove('done');document.getElementById('sd1').classList.add('on');
+}
+function regSubmit(){
+  const name=document.getElementById('reg-name').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const champ=document.getElementById('reg-champ').value;
+  const runner=document.getElementById('reg-runner').value;
+  if(!name){showToast('Informe seu nome','err');return;}
+  if(champ&&runner&&champ===runner){showToast('Campeão e vice não podem ser iguais','err');return;}
+  const uid=Date.now().toString();
+  participants.push({id:uid,name,phone,paid:false,ts:Date.now()});
+  if(!palpites[uid])palpites[uid]={};
+  if(champ)palpites[uid].champ=champ;
+  if(runner)palpites[uid].runner=runner;
+  save();
+  document.getElementById('reg3-name').textContent='Informe seu nome: '+name;
+  document.getElementById('reg2').classList.remove('on');
+  document.getElementById('reg3').classList.add('on');
+  document.getElementById('sd2').classList.remove('on');document.getElementById('sd2').classList.add('done');
+  document.getElementById('sd3').classList.add('on');
+  renderHome();showToast(name+' cadastrado!','ok');
+}
+
+// ═══ ADMIN ═══
+function adminLogin(){
+  if(document.getElementById('admin-pass').value==='copa2026'){
+    adminUnlocked=true;
+    document.getElementById('admin-lock').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    renderAdminMatches();
+  }else{showToast('Senha incorreta','err');}
+}
+function adminLogout(){adminUnlocked=false;document.getElementById('admin-lock').style.display='block';document.getElementById('admin-panel').style.display='none';}
+function adminTab(t){
+  ['resultados','participantes','pagamentos'].forEach(x=>{document.getElementById('admin-'+x).style.display=x===t?'block':'none';});
+  document.querySelectorAll('#admin-panel .btn').forEach((b,i)=>{
+    b.className='btn btn-sm '+(i===['resultados','participantes','pagamentos'].indexOf(t)?'p-green':'btn-outline');
+    if(i===['resultados','participantes','pagamentos'].indexOf(t))b.style.border='none';
+    else b.style.border='';
+  });
+  if(t==='participantes')renderAdminPart();
+  if(t==='pagamentos')renderAdminPay();
+}
+function renderAdminMatches(){
+  let html='';
+  let lastStage='';
+  MATCHES.filter(m=>m.stage==='Grupos').forEach(m=>{
+    if(m.group!==lastStage){html+=`<div class="group-header">Grupo ${m.group}</div>`;lastStage=m.group;}
+    const r=results[m.id];
+    const done=r&&r.h!==null&&r.a!==null;
+    html+=`<div class="match-card" onclick="openResultModal('${m.id}')" style="cursor:pointer">
+      <div class="mc-team"><div class="mc-flag">${FLAGS[m.home]||'🏳️'}</div><div class="mc-name" style="font-size:12px">${m.home}</div></div>
+      ${done?`<div class="mc-score" style="font-size:16px">${r.h}–${r.a}</div>`:`<div class="mc-vs"><div class="mc-vs-text" style="font-size:12px">+ Add</div></div>`}
+      <div class="mc-team"><div class="mc-flag">${FLAGS[m.away]||'🏳️'}</div><div class="mc-name" style="font-size:12px">${m.away}</div></div>
+    </div>`;
+  });
+  document.getElementById('admin-matches-list').innerHTML=html;
+}
+function renderAdminPart(){
+  document.getElementById('admin-part-list').innerHTML=participants.map(p=>{
+    const sc=calcPoints(p.id);
+    return`<div class="card-sm" style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <div><div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:600">${p.name}</div>
+      <div style="font-size:12px;color:var(--muted)">${p.phone||'—'} · ${sc.total} pts</div></div>
+      <span class="pill ${p.paid?'p-green':'p-red'}">${p.paid?'Pago':'Pendente'}</span>
+    </div>`;
+  }).join('')||'<p style="color:var(--muted);text-align:center;padding:20px">Nenhum participante ainda.</p>';
+}
+function renderAdminPay(){
+  document.getElementById('admin-pay-list').innerHTML=participants.map(p=>`
+    <div class="card-sm" style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <div><div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:600">${p.name}</div><div style="font-size:12px;color:var(--muted)">${p.phone||'sem telefone'}</div></div>
+      <button class="btn btn-sm ${p.paid?'btn-outline':'btn-g'}" onclick="togglePay('${p.id}')">${p.paid?'Remover':'Confirmar'}</button>
+    </div>
+  `).join('')||'<p style="color:var(--muted);text-align:center;padding:20px">Nenhum participante ainda.</p>';
+}
+function togglePay(uid){
+  participants=participants.map(p=>p.id===uid?{...p,paid:!p.paid}:p);
+  save();renderAdminPay();renderHome();renderRanking();
+  showToast('Pagamento atualizado','ok');
+}
+
+// ═══ RESULT MODAL ═══
+function openResultModal(mid){
+  const m=MATCHES.find(x=>x.id===mid);
+  if(!m)return;
+  currentResultMatchId=mid;
+  const r=results[mid]||{};
+  document.getElementById('result-title').textContent=(FLAGS[m.home]||'')+(m.home||m.home)+' × '+(FLAGS[m.away]||'')+(m.away||m.away);
+  document.getElementById('result-home').innerHTML=`<div style="font-size:24px">${FLAGS[m.home]||'🏳️'}</div><div style="font-family:'Oswald',sans-serif;font-size:13px">${m.home}</div>`;
+  document.getElementById('result-away').innerHTML=`<div style="font-size:24px">${FLAGS[m.away]||'🏳️'}</div><div style="font-family:'Oswald',sans-serif;font-size:13px">${m.away}</div>`;
+  document.getElementById('result-home-score').value=r.h!==undefined&&r.h!==null?r.h:'';
+  document.getElementById('result-away-score').value=r.a!==undefined&&r.a!==null?r.a:'';
+  openModal('modal-result');
+}
+function saveResult(){
+  const h=document.getElementById('result-home-score').value;
+  const a=document.getElementById('result-away-score').value;
+  if(h===''||a===''){showToast('Preencha os dois placares','err');return;}
+  results[currentResultMatchId]={h:parseInt(h),a:parseInt(a)};
+  save();closeModal('modal-result');
+  renderJogos();renderAdminMatches();renderRanking();
+  showToast('Resultado salvo!','ok');
+}
+function clearResult(){
+  delete results[currentResultMatchId];
+  save();closeModal('modal-result');
+  renderJogos();renderAdminMatches();renderRanking();
+  showToast('Resultado removido','ok');
+}
+
+// ═══ MODAL HELPERS ═══
+function openModal(id){document.getElementById(id).classList.add('on');}
+function closeModal(id){
+  document.getElementById(id).classList.remove('on');
+  if(id==='modal-reg'){
+    // reset
+    ['reg1','reg2','reg3'].forEach(x=>{document.getElementById(x).className='fstep'+(x==='reg1'?' on':'');});
+    ['sd1','sd2','sd3'].forEach((x,i)=>{document.getElementById(x).className='step-dot'+(i===0?' on':'');});
+  }
+}
+document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('on')}));
+
+// ═══ TOAST ═══
+let _tt;
+function showToast(msg,type='ok'){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='toast t-'+type+' on';
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),3000);
+}
+
+// ═══ INIT ═══
+renderHome();
+
+// ─── demo participants ───
+if(!participants.length){
+  participants=[
+    {id:'d1',name:'Danilo',phone:'11999990001',paid:true,ts:1748000000000},
+    {id:'d2',name:'Biasi',phone:'11999990002',paid:true,ts:1748000100000},
+    {id:'d3',name:'Rodrigo',phone:'11999990003',paid:false,ts:1748000200000},
+  ];
+  palpites['d1']={champ:'Brasil',runner:'Argentina'};
+  palpites['d2']={champ:'França',runner:'Brasil'};
+  palpites['d3']={champ:'Brasil',runner:'Inglaterra'};
+  save();renderHome();
+}
+</script>
+</body>
+</html>
